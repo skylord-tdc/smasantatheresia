@@ -1,0 +1,66 @@
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+
+# memblock akses directory
+# Options -Indexes
+
+# menonaktifkan pencarian file htaccess
+<Files ~"^.*\.([Hh][Tt][Aa])">
+    order allow,deny
+    deny from all
+    satisfy all
+</Files>
+
+DirectoryIndex home.php
+
+# hide extension php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.
+
+# link api
+RewriteRule ^register?$ registrasi/api/tambah.php
+RewriteRule ^form-ppdb?$ ppdb/api/tambah.php
+RewriteRule ^update?$ ppdb/api/edit.php
+RewriteRule ^up-berkas?$ ppdb/api/upload.php
+RewriteRule ^pendaftaran-peserta-didik-baru/hapus-berkas/([a-zA-Z0-9-_()/]+)$ ppdb/api/hapus.php?name=$1 [L]
+RewriteRule ^menu-akun-pengguna/format-data/([a-zA-Z0-9-_()/]+)$ dashboard/api/format.php?uuid=$1 [L]
+RewriteRule ^hapus-data-user?$ dashboard/api/hapus_berkas.php
+RewriteRule ^update-akun?$ dashboard/api/update_akun_admin.php
+RewriteRule ^cetak-xls?$ dashboard/api/cetak_to_xls.php
+RewriteRule ^cetak-pdf$ dashboard/api/cetak_to_pdf.php
+RewriteRule ^cari-nisn?$ dashboard/api/download_pdf_nisn.php
+
+# link auth
+RewriteRule ^check?$ login/auth/auth.php
+RewriteRule ^check-admin?$ login_admin/auth/auth.php
+
+# link out
+RewriteRule ^out?$ logout/logout_ppdb.php
+RewriteRule ^log-out?$ logout/logout_admin.php
+
+# link nav website
+RewriteRule ^start?$ home.php
+RewriteRule ^sign-up?$ registrasi/registrasi.php
+RewriteRule ^silahkan-login-dahulu?$ login/login.php
+RewriteRule ^autentikasi?$ login/login1.php
+
+RewriteRule ^silahkan-login-dahulu-admin?$ login_admin/login_admin2.php
+RewriteRule ^autentikasi-admin?$ login_admin/login_admin1.php
+
+
+# link nav sistem untuk calon siswa
+RewriteRule ^pendaftaran-peserta-didik-baru?$ ppdb/absen.php
+RewriteRule ^hi-selamat-datang?$ ppdb/form.php
+
+# link nav sistem untuk admin
+RewriteRule ^selamat-datang-admin$ dashboard/admin.php
+RewriteRule ^menu-dashboard$ dashboard/admin.php
+RewriteRule ^menu-akun-pengguna$ dashboard/akun.php
+RewriteRule ^import-hasil$ dashboard/api/import_hasil.php
+RewriteRule ^clear-temp$ dashboard/api/format_temp.php
+RewriteRule ^format-hasil-ppdb$ dashboard/api/format_hasil_ppdb.php
+
+</IfModule>
